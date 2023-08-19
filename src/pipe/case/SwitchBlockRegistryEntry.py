@@ -18,43 +18,65 @@ class CallableValue:
 
 
 class AbstractSwitchBlockRegistryEntry(PipelineRegistryEntry):
-    def __init__(self, pipe_from=None, pipe_to=None):
-        super().__init__(pipe_from=pipe_from, pipe_to=pipe_to)
-
-
-class SwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
     def __init__(self, match_expression_function, pipe_from=None, pipe_to=None):
         super().__init__(pipe_from=pipe_from, pipe_to=pipe_to)
         self.match_expression_function = match_expression_function
         self.case_block_value_registry = {}
         self.case_block_expression_registry = {}
+        self.default_block_value = None
+
+    def apply(self, item):
+
+        # Determine match expression
+        match_expression = item
+        if self.match_expression_function is not None:
+            match_expression = self.match_expression_function(item)
+
+        # Attempt to find the relevant case block by value lookup
+        value_match_value = self.case_block_value_registry.get(match_expression)
+        if value_match_value is not None:
+            return value_match_value.get_value(item)
+
+        # Attempt to find the relevant case block by evaluating item in an expression
+        for case_block_expression, case_block_value in self.case_block_expression_registry:
+            if match_expression == case_block_expression(item):
+                return case_block_value.get_value(item)
+
+        # Return default value
+        if callable(self.default_block_value):
+            return self.default_block_value(item)
+        else:
+            return self.default_block_value
+
+
+class SwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
+    def __init__(self, match_expression_function, pipe_from=None, pipe_to=None):
+        super().__init__(match_expression_function=match_expression_function, pipe_from=pipe_from, pipe_to=pipe_to)
 
     def add_case(self, match_expression, value_expression):
         if callable(match_expression):
-            self.__add_expression_case(match_expression, value_expression)
+            self.case_block_expression_registry[match_expression] = CallableValue(value_expression)
         else:
-            self.__add_value_case(match_expression, value_expression)
+            self.case_block_value_registry[match_expression] = CallableValue(value_expression)
 
-    def __add_value_case(self, match_value, value_expression):
-        self.case_block_value_registry[match_value] = CallableValue(value_expression)
-
-    def __add_expression_case(self, match_fcn, value_expression):
-        self.case_block_expression_registry[match_fcn] = CallableValue(value_expression)
+    def add_default(self, value_expression):
+        self.default_block_value = value_expression
 
 
 
 class BinarySwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
-    def __init__(self, pipe_from=None, pipe_to=None):
-        super().__init__(pipe_from=pipe_from, pipe_to=pipe_to)
+    def __init__(self, match_expression_function=None, pipe_from=None, pipe_to=None):
+        super().__init__(match_expression_function=match_expression_function, pipe_from=pipe_from, pipe_to=pipe_to)
 
-    def add_case(self):
-        if not binary value, throw
-        super.add_case()
+    def add_true(self, value_expression):
+        self.case_block_value_registry[True] = CallableValue(value_expression)
 
-class EnumSwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
-    def __init__(self, pipe_from=None, pipe_to=None):
-        super().__init__(pipe_from=pipe_from, pipe_to=pipe_to)
+    def add_false(self, value_expression):
+        self.case_block_value_registry[False] = CallableValue(value_expression)
+        self.default_block_value = value_expression
 
-    def add_case(self):
-        if not enum value, throw
-        super.add_case()
+
+
+
+# TODO
+# class EnumSwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
