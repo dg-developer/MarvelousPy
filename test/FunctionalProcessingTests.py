@@ -1,6 +1,9 @@
 import unittest
 
-from src.FunctionalProcessing import *
+from src.pipe.case.SwitchBlockRegistryEntry import SwitchBlockRegistryEntry
+
+
+# from src.FunctionalProcessing import *
 
 
 class FunctionalProcessingTests(unittest.TestCase):
@@ -47,28 +50,53 @@ class FunctionalProcessingTests(unittest.TestCase):
     def test_case_nominal_usage_list(self):
 
         # Set up the switch
-        data_pipe = switch()
+        data_pipe = SwitchBlockRegistryEntry()
 
         # Assign a value through a function
-        case(data_pipe, 1, lambda x: "One")
+        data_pipe.add_case(1, lambda x: "One")
 
         # Assign values directly
-        case(data_pipe, 2, "Two")
-        case(data_pipe, 3, "Three")
-        case(data_pipe, 4, "Four")
-        case(data_pipe, 5, "Five")
-        case(data_pipe, 6, "Six")
-        case(data_pipe, 7, "Seven")
-        case(data_pipe, 8, "Eight")
-        case(data_pipe, 9, "Nine")
-        case(data_pipe, 10, "Ten")
+        data_pipe.add_case(2, "Two")
+        data_pipe.add_case(3, "Three")
+        data_pipe.add_case(4, "Four")
+        data_pipe.add_case(5, "Five")
+        data_pipe.add_case(6, "Six")
+        data_pipe.add_case(7, "Seven")
+        data_pipe.add_case(8, "Eight")
+        data_pipe.add_case(9, "Nine")
+        data_pipe.add_case(10, "Ten")
 
         # Assign a default value
-        case_default(data_pipe, "Unknown")
+        data_pipe.add_default("Unknown")
 
         # Apply the switch to capture data
-        out_iterator = apply_switch(data_pipe, self.data_list)
+        out_iterator = data_pipe.apply(self.data_list)
         self.assertListEqual(list(out_iterator), self.expected_data_list)
+
+        #
+        # # Set up the switch
+        # data_pipe = switch()
+        #
+        # # Assign a value through a function
+        # case(data_pipe, 1, lambda x: "One")
+        #
+        # # Assign values directly
+        # case(data_pipe, 2, "Two")
+        # case(data_pipe, 3, "Three")
+        # case(data_pipe, 4, "Four")
+        # case(data_pipe, 5, "Five")
+        # case(data_pipe, 6, "Six")
+        # case(data_pipe, 7, "Seven")
+        # case(data_pipe, 8, "Eight")
+        # case(data_pipe, 9, "Nine")
+        # case(data_pipe, 10, "Ten")
+        #
+        # # Assign a default value
+        # case_default(data_pipe, "Unknown")
+        #
+        # # Apply the switch to capture data
+        # out_iterator = apply_switch(data_pipe, self.data_list)
+        # self.assertListEqual(list(out_iterator), self.expected_data_list)
 
     def test_case_dictionary_registered_lookup(self):
         case_lookup = {1: "One", 2:"Two", 3:"Three", 4:"Four", 5: "Five", 6:"Six", 7:"Seven", 8:"Eight", 9: "Nine", 10: "Ten", None: "Unknown"}

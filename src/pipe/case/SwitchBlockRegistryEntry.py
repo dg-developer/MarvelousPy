@@ -6,14 +6,14 @@ class CallableValue:
 
     def __init__(self, value_expression):
 
-        self.value_expression_fcn = value_expression
+        self.__value_expression_fcn = value_expression
 
         # Transform a non-callable value into a callable function
         if not callable(value_expression):
-            self.value_expression = lambda item: value_expression
+            self.__value_expression_fcn = lambda item: value_expression
 
     def get_value(self, item):
-        return self.value_expression_fcn(item)
+        return self.__value_expression_fcn(item)
 
 
 
@@ -86,7 +86,7 @@ class AbstractSwitchBlockRegistryEntry(PipelineRegistryEntry):
 
 
 class SwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
-    def __init__(self, match_expression_function, pipe_from=None, pipe_to=None):
+    def __init__(self, match_expression_function=None, pipe_from=None, pipe_to=None):
         super().__init__(match_expression_function=match_expression_function, pipe_from=pipe_from, pipe_to=pipe_to)
 
     def add_case(self, match_expression, value_expression):
