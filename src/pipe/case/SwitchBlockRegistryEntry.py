@@ -95,8 +95,11 @@ class SwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
         else:
             self.case_block_expression_registry[match_expression] = CallableValue(value_expression)
 
+        return self
+
     def add_default(self, value_expression):
         self.default_block_value = CallableValue(value_expression)
+        return self
 
     def add_cases_from_dict(self, case_lookup):
         """
@@ -118,6 +121,8 @@ class SwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
             else:
                 self.add_case(match_expression, value_expression)
 
+        return self
+
 
 
 
@@ -127,12 +132,19 @@ class BinarySwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
 
     def add_true(self, value_expression):
         self.case_block_value_registry[True] = CallableValue(value_expression)
+        return self
 
     def add_false(self, value_expression):
         self.case_block_value_registry[False] = CallableValue(value_expression)
         self.default_block_value = CallableValue(value_expression)
+        return self
 
 
 
 # TODO
 # class EnumSwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
+
+
+
+
+

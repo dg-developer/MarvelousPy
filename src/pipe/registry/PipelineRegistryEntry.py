@@ -39,3 +39,6 @@ class PipelineRegistryEntry:
     def _apply_item(self, item):
         """Apply to a single item."""
         pass
+
+
+

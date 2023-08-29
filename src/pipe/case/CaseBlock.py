@@ -1,2 +1,0 @@
-class CaseBlock:
-class BinaryCaseBlock
