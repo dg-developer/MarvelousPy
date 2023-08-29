@@ -106,7 +106,7 @@ class FunctionalProcessingTests(unittest.TestCase):
         case(data_pipe, 10, "TEN")
         case_default(data_pipe, "UNKNOWN")
         out_iterator = apply_keys(data_pipe, data_dict)
-        self.assertListEqual(dict(out_iterator), expected_data_dict)
+        self.assertDictEqual(dict(list(out_iterator)), expected_data_dict)
 
     def test_case_dict_values(self):
         data_dict = {1: "One", 2:"Two", 3:"Three", 4:"Four", 5: "Five", 6:"Six", 7:"Seven", 8:"Eight", 9: "Nine", 10: "Ten", 999: "Nine-Hundred Ninety-Nine"}
@@ -124,7 +124,7 @@ class FunctionalProcessingTests(unittest.TestCase):
         case(data_pipe, "Ten", "TEN")
         case_default(data_pipe, "UNKNOWN")
         out_iterator = apply_values(data_pipe, data_dict)
-        self.assertListEqual(dict(out_iterator), expected_data_dict)
+        self.assertDictEqual(dict(list(out_iterator)), expected_data_dict)
 
 
 
@@ -144,15 +144,18 @@ class FunctionalProcessingTests(unittest.TestCase):
         # Verify is configurable with different collection
         data_list = ["A", "B", "Z", "C", "D"]
         expected_data_list = [10, 11, -1, 12, 13]
-        data_pipe = switch()
         case(data_pipe, "A", 10)
         case(data_pipe, "B", 11)
         case(data_pipe, "C", 12)
         case(data_pipe, "D", 13)
-        case_default(data_pipe,-1)
+        case_default(data_pipe, -1)
+        out_iterator = apply(data_pipe, data_list)
+        self.assertListEqual(list(out_iterator), expected_data_list)
+
 
     def test_case_usage_as_map(self):
-        # Basic mapping function
+
+        # Pure mapping function
         data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         expected_data_list = [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
         data_pipe = switch()
@@ -160,7 +163,7 @@ class FunctionalProcessingTests(unittest.TestCase):
         out_iterator = apply(data_pipe, data_list)
         self.assertListEqual(list(out_iterator), expected_data_list)
 
-        # Mapping function with selector logic
+        # Mapping function with selector logic (maps all values except those matching a criterion)
         data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         expected_data_list = [1, 4, 9, 16, 25, 36, "Seven", 64, 81, 100]
         data_pipe = switch()

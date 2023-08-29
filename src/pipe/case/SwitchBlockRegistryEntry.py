@@ -22,22 +22,46 @@ class AbstractSwitchBlockRegistryEntry(PipelineRegistryEntry):
 
     def __init__(self, match_expression_function=None, pipe_from=None, pipe_to=None):
         """
+        Defines a switch block.
 
-        # Build a switch block with no expression transformation function.
-        switch()
-        case(...)
-        default(...)
+            # Anatomy of a switch block declaration
+            switch(<match expression>)
+            case(<case expression>, <value expression>)
+            default(<default value expression>)
 
-        # Build a pure mapping operation option 1
-        switch(lambda x: <transform>)
-        default(lambda x: x)
+            # Build a pure mapping function
+            switch()
+            default(lambda x: <transform>)
 
-        # Build a pure mapping operation option 2
-        switch()
-        default(lambda x: <transform>)
+            # Build a switch block, switching based on raw value, generating a value
+            switch()
+            case(1, "One")
+            case(2, "Two")
+            default("Unknown")
+            apply([0, 1, 2])  # Returns [ "Unknown", "One", "Two"]
 
-        :param match_expression_function: Monolithic transformation function which could be used to form a mapping
-                operation.
+            # Build a switch block, switching based on the value transformed through the match expression, generating
+                a value
+            switch(lambda x: x + 1)
+            case(1, "One")
+            default("Unknown")
+            apply([0, 1, 2])  # Returns [ "One", "Unknown", "Unknown"]
+
+            # Build a switch block, switching based on the case expression matched to the value processed by the match
+                expression, generating an expression
+            switch(lambda x: x + 1)
+            case(lambda x: x == 4, lambda x: x*x)
+            default("Unknown")
+            apply([1, 2, 3])  # Returns [ "Unknown", "Unknown", 9]
+            # Explanation:
+            #   Consider value 3
+            #   Match expression evaluates to 3 + 1
+            #   Case expression evaluates to 4 == 4
+            #   Value expression generates 3 * 3. Note that the item under consideration, not the result of the
+                match expression, is plugged into the value expression.
+
+        :param match_expression_function: Silent transformation function used to transform input prior to comparison with
+            case lookup tables.
         :param pipe_from:
         :param pipe_to:
         """
@@ -75,7 +99,7 @@ class AbstractSwitchBlockRegistryEntry(PipelineRegistryEntry):
             return value_match_value.get_value(item)
 
         # Attempt to find the relevant case block by evaluating item in an expression
-        for case_block_expression, case_block_value in self.case_block_expression_registry:
+        for case_block_expression, case_block_value in self.case_block_expression_registry.items():
             if match_expression == case_block_expression(item):
                 return case_block_value.get_value(item)
 
@@ -115,7 +139,7 @@ class SwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
 
         :return:
         """
-        for match_expression, value_expression in case_lookup:
+        for match_expression, value_expression in case_lookup.items():
             if match_expression is None:
                 self.add_default(value_expression)
             else:
