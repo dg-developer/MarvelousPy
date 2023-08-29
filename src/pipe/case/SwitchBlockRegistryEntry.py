@@ -67,20 +67,20 @@ class AbstractSwitchBlockRegistryEntry(PipelineRegistryEntry):
 
         # Dispatch
         if isinstance(item, Iterable):
-            return self.__apply_iterable()
+            return self.__apply_iterable(item)
         else:
-            return self.__apply_item()
+            return self.__apply_item(item)
 
 
     def apply_keys(self, dictionary_data):
         """Apply the case block to the keys of a dictionary."""
         for key, value in dictionary_data:
-            yield self.__apply(key), value
+            yield self.__apply_item(key), value
 
     def apply_values(self, dictionary_data):
         """Apply the case block to the values of a dictionary."""
         for key, value in dictionary_data:
-            yield key, self.__apply(value)
+            yield key, self.__apply_item(value)
 
 
     def __apply_iterable(self, iterable_data):

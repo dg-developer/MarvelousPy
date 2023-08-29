@@ -6,5 +6,5 @@ class PipelineRegistryEntry:
         self.pipe_from = pipe_from
         self.pipe_to = pipe_to
 
-    def execute(self, *args, **kwargs):
+    def apply(self, *args, **kwargs):
         pass
