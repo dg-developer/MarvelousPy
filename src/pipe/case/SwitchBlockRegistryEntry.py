@@ -1,6 +1,5 @@
 # AKA switch block entry
 from src.pipe.registry.PipelineRegistryEntry import PipelineRegistryEntry
-from collections.abc import Iterable
 
 class CallableValue:
     """House a value, or expression used to determine a value."""
@@ -26,7 +25,7 @@ class AbstractSwitchBlockRegistryEntry(PipelineRegistryEntry):
 
         # Build a switch block with no expression transformation function.
         switch()
-        case(..)
+        case(...)
         default(...)
 
         # Build a pure mapping operation option 1
@@ -57,43 +56,9 @@ class AbstractSwitchBlockRegistryEntry(PipelineRegistryEntry):
         # Assign None to return as the default value
         self.default_block_value = CallableValue(None)
 
-    def apply(self, item):
-        """
-        Apply the case block to an item or iterable. In the case of a dictionary, key-value tuples are iterated.
-
-        :param item
-        :return:
-        """
-
-        # Dispatch
-        if isinstance(item, Iterable):
-            return self.__apply_iterable(item)
-        else:
-            return self.__apply_item(item)
-
-
-    def apply_keys(self, dictionary_data):
-        """Apply the case block to the keys of a dictionary."""
-        for key, value in dictionary_data:
-            yield self.__apply_item(key), value
-
-    def apply_values(self, dictionary_data):
-        """Apply the case block to the values of a dictionary."""
-        for key, value in dictionary_data:
-            yield key, self.__apply_item(value)
-
-
-    def __apply_iterable(self, iterable_data):
-        # Apply case block to items in an iterable.
-        for item in iterable_data:
-            yield self.__apply_item(item)
-
-
-
-    def __apply_item(self, item):
+    def _apply_item(self, item):
         """
         Apply case block to a single item.
-        Apply case block to items in an iterable.
 
         item -> match_expression -> value lookup -> expression lookup
 
@@ -166,7 +131,6 @@ class BinarySwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
     def add_false(self, value_expression):
         self.case_block_value_registry[False] = CallableValue(value_expression)
         self.default_block_value = CallableValue(value_expression)
-
 
 
 
