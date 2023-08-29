@@ -101,8 +101,8 @@ def case_default(pipe, fcn_or_value):
     pipeline_registry.register_default_case(pipe, fcn_or_value)
 
 
-def apply_switch(pipe):
     if not pipeline_registry.is_switch_expression_fcn_defined(pipe):
+def apply_switch(pipe):
         raise AttributeError("No switch block is defined for this pipe.")
 
     if not pipeline_registry.is_default_case_defined(pipe):

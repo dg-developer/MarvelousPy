@@ -18,19 +18,57 @@ class CallableValue:
 
 
 class AbstractSwitchBlockRegistryEntry(PipelineRegistryEntry):
-    def __init__(self, match_expression_function, pipe_from=None, pipe_to=None):
+    """Represents a switch block."""
+
+    def __init__(self, match_expression_function=None, pipe_from=None, pipe_to=None):
+        """
+
+        # Build a switch block with no expression transformation function.
+        switch()
+        case(..)
+        default(...)
+
+        # Build a pure mapping operation option 1
+        switch(lambda x: <transform>)
+        default(lambda x: x)
+
+        # Build a pure mapping operation option 2
+        switch()
+        default(lambda x: <transform>)
+
+        :param match_expression_function: Monolithic transformation function which could be used to form a mapping
+                operation.
+        :param pipe_from:
+        :param pipe_to:
+        """
         super().__init__(pipe_from=pipe_from, pipe_to=pipe_to)
-        self.match_expression_function = match_expression_function
+
+        if callable(match_expression_function):
+            # Match expression provided
+            self.match_expression_function = match_expression_function
+        else:
+            # Build match expression function to map onto itself
+            self.match_expression_function = lambda x: x
+
         self.case_block_value_registry = {}
         self.case_block_expression_registry = {}
-        self.default_block_value = None
+
+        # Assign None to return as the default value
+        self.default_block_value = CallableValue(None)
 
     def apply(self, item):
+        """
+        Apply case block to a single item.
+        Apply case block to items in an iterable.
 
-        # Determine match expression
-        match_expression = item
-        if self.match_expression_function is not None:
-            match_expression = self.match_expression_function(item)
+        item -> match_expression -> value lookup -> expression lookup
+
+        :param item:
+        :return:
+        """
+
+        # Determine the match expression
+        match_expression = self.match_expression_function(item)
 
         # Attempt to find the relevant case block by value lookup
         value_match_value = self.case_block_value_registry.get(match_expression)
@@ -43,10 +81,12 @@ class AbstractSwitchBlockRegistryEntry(PipelineRegistryEntry):
                 return case_block_value.get_value(item)
 
         # Return default value
-        if callable(self.default_block_value):
-            return self.default_block_value(item)
-        else:
-            return self.default_block_value
+        return self.default_block_value.get_value(item)
+
+    def apply_iterable(self):
+        # Apply case block to items in an iterable.
+
+    def apply_to_keys(self, ):
 
 
 class SwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
@@ -54,14 +94,33 @@ class SwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
         super().__init__(match_expression_function=match_expression_function, pipe_from=pipe_from, pipe_to=pipe_to)
 
     def add_case(self, match_expression, value_expression):
-        if callable(match_expression):
-            self.case_block_expression_registry[match_expression] = CallableValue(value_expression)
-        else:
+        if not callable(match_expression):
             self.case_block_value_registry[match_expression] = CallableValue(value_expression)
+        else:
+            self.case_block_expression_registry[match_expression] = CallableValue(value_expression)
 
     def add_default(self, value_expression):
-        self.default_block_value = value_expression
+        self.default_block_value = CallableValue(value_expression)
 
+    def add_cases_from_dict(self, case_lookup):
+        """
+
+        :param case_lookup: Values or expressions mapped to output values or expressions. None key denotes default case. Example:
+
+                {
+                    1: "One",                   # Maps a value to a value
+                    lambda x: x == 2: "Two",    # Evaluates the match expression (computed from the item), and if the function returns true the value "Two" is returned.
+                    3: lambda x: "Three",       # Maps a value to a function which is executed on the item.
+                    None: "Unknown"             # Provides a default value. If not provided, None is used as the default.
+                 }
+
+        :return:
+        """
+        for match_expression, value_expression in case_lookup:
+            if match_expression is None:
+                self.add_default(value_expression)
+            else:
+                self.add_case(match_expression, value_expression)
 
 
 class BinarySwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
@@ -73,7 +132,7 @@ class BinarySwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
 
     def add_false(self, value_expression):
         self.case_block_value_registry[False] = CallableValue(value_expression)
-        self.default_block_value = value_expression
+        self.default_block_value = CallableValue(value_expression)
 
 
 
