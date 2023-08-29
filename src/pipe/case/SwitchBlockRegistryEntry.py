@@ -1,5 +1,6 @@
 # AKA switch block entry
 from src.pipe.registry.PipelineRegistryEntry import PipelineRegistryEntry
+from collections.abc import Iterable
 
 class CallableValue:
     """House a value, or expression used to determine a value."""
@@ -58,6 +59,39 @@ class AbstractSwitchBlockRegistryEntry(PipelineRegistryEntry):
 
     def apply(self, item):
         """
+        Apply the case block to an item or iterable. In the case of a dictionary, key-value tuples are iterated.
+
+        :param item
+        :return:
+        """
+
+        # Dispatch
+        if isinstance(item, Iterable):
+            return self.__apply_iterable()
+        else:
+            return self.__apply_item()
+
+
+    def apply_keys(self, dictionary_data):
+        """Apply the case block to the keys of a dictionary."""
+        for key, value in dictionary_data:
+            yield self.__apply(key), value
+
+    def apply_values(self, dictionary_data):
+        """Apply the case block to the values of a dictionary."""
+        for key, value in dictionary_data:
+            yield key, self.__apply(value)
+
+
+    def __apply_iterable(self, iterable_data):
+        # Apply case block to items in an iterable.
+        for item in iterable_data:
+            yield self.__apply_item(item)
+
+
+
+    def __apply_item(self, item):
+        """
         Apply case block to a single item.
         Apply case block to items in an iterable.
 
@@ -83,10 +117,7 @@ class AbstractSwitchBlockRegistryEntry(PipelineRegistryEntry):
         # Return default value
         return self.default_block_value.get_value(item)
 
-    def apply_iterable(self):
-        # Apply case block to items in an iterable.
 
-    def apply_to_keys(self, ):
 
 
 class SwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
@@ -121,6 +152,8 @@ class SwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
                 self.add_default(value_expression)
             else:
                 self.add_case(match_expression, value_expression)
+
+
 
 
 class BinarySwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
