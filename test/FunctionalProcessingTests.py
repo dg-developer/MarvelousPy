@@ -270,11 +270,37 @@ class FunctionalProcessingTests(unittest.TestCase):
     # Nested case blocks
     # ------------------------------------------------------------------------------
 
-    # def test_nested_case_blocks(self):
+    def test_chained_functions(self):
+
+        data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        expected_data_list = [1, 4, 9, 16, 25, 216, 343, 512, 729, 1000]
+
+        data_pipe = switch()
+        c0 = lambda x: -x
+        v0 = lambda x: x**2
+        case(data_pipe, lambda x: c0(x) >= -5, lambda x: v0(x))
+        c1 = lambda x: x - 0.1
+        v1 = lambda x: x**3
+        case(data_pipe, lambda x: c1(x) > 4.89, lambda x: v1(x))
 
 
 
 
+        out_iterator = apply(data_pipe, data_list)
+        self.assertListEqual(list(out_iterator), expected_data_list)
+
+
+    def test_nested_case_blocks(self):
+
+
+
+        data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        expected_data_list = [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+
+        data_pipe_0 = switch()
+
+        out_iterator = apply(data_pipe_0, data_list)
+        self.assertListEqual(list(out_iterator), expected_data_list)
 
 
 
