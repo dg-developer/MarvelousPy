@@ -283,21 +283,25 @@ class FunctionalProcessingTests(unittest.TestCase):
         v1 = lambda x: x**3
         case(data_pipe, lambda x: c1(x) > 4.89, lambda x: v1(x))
 
-
-
-
         out_iterator = apply(data_pipe, data_list)
         self.assertListEqual(list(out_iterator), expected_data_list)
 
 
     def test_nested_case_blocks(self):
 
+        data_list = [1, 2, 3,   4, 5, 6,   7, 8, 9, 10]
+        expected_data_list = [1, 4, 9,   "Four", "Five", "data_pipe_1 default",   343, 512, 729, "data_pipe_0 default"]
 
-
-        data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        expected_data_list = [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+        data_pipe_1 = switch()
+        case(data_pipe_1, 4, lambda x: "Four")
+        case(data_pipe_1, lambda x: x == 5, "Five")
+        case_default(data_pipe_1, "data_pipe_1 default")
 
         data_pipe_0 = switch()
+        case(data_pipe_0, lambda x: x < 4, lambda x: x**2)
+        case(data_pipe_0, lambda x: 4 <= x <= 6, lambda x: apply(data_pipe_1, x))
+        case(data_pipe_0, lambda x: 6 < x < 10, lambda x: x**3)
+        case_default(data_pipe_0, "data_pipe_0 default")
 
         out_iterator = apply(data_pipe_0, data_list)
         self.assertListEqual(list(out_iterator), expected_data_list)
