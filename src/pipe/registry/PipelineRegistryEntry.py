@@ -33,18 +33,21 @@ class PipelineRegistryEntry:
         for key, value in dictionary_data.items():
             yield key, self._apply_item(value)
 
-    def _apply_iterable(self, iterable_data):
+    def _apply_iterable(self, it):
         # Apply case block to items in an iterable.
-        for item in iterable_data:
+        for item in it:
             yield self._apply_item(item)
 
 
-    def _apply_step_iterable(self, iterable_data):
-        q = deque(iterable_data, 2)
-        while len(q) > 0:
-            values = q[0:3]
-            print("values")
-            print(values)
+    # TODO Move to separate class tree as incongruent with case block execution
+    def _apply_step_iterable(self, it):
+        accumulator_len = 3
+        sit = itertools.islice(it, accumulator_len)
+        slice_list = list(sit)
+        while len(slice_list) > 0:
+            yield self._accumulator_function(slice_list)
+            sit = itertools.islice(it, accumulator_len)
+            slice_list = list(sit)
 
 
     def _apply_item(self, item):
