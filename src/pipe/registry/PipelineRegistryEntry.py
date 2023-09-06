@@ -1,3 +1,5 @@
+import itertools
+from collections import deque
 from collections.abc import Iterable
 
 class PipelineRegistryEntry:
@@ -35,6 +37,15 @@ class PipelineRegistryEntry:
         # Apply case block to items in an iterable.
         for item in iterable_data:
             yield self._apply_item(item)
+
+
+    def _apply_step_iterable(self, iterable_data):
+        q = deque(iterable_data, 2)
+        while len(q) > 0:
+            values = q[0:3]
+            print("values")
+            print(values)
+
 
     def _apply_item(self, item):
         """Apply to a single item."""

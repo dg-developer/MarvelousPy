@@ -1,4 +1,6 @@
+import itertools
 import unittest
+from collections import deque
 
 from src.pipe.case.SwitchBlock import *
 
@@ -346,6 +348,33 @@ class FunctionalProcessingTests(unittest.TestCase):
 
 
 
+    def test_deque(self):
+        data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        iterable_data = iter(data_list)
+
+        # qlen = 3
+        # q = deque(iterable_data, 2)
+
+        it = iter(data_list)
+        l = itertools.islice(it, 3)
+        ll = list(l)
+        while len(ll) > 0:
+            print("l")
+            print(ll)
+            l = itertools.islice(it, 3)
+            ll = list(l)
+
+
+
+            # values = q.popleft()
+            # print("values")
+            # print(values)
+
+            # values = q[0]
+            # # values = q[0:qlen]
+            # print("values")
+            # print(values)
+            # q.rotate(-1)
 
 
 

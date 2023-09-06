@@ -55,6 +55,8 @@ def apply_values(data_pipe, data):
 def fmap(mapping_function):
     return SwitchBlockRegistryEntry().add_default(mapping_function)
 
+def reduce(reduce_function):
+    data_pipe = SwitchBlockRegistryEntry()
 
 
 
