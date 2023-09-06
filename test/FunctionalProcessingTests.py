@@ -265,3 +265,69 @@ class FunctionalProcessingTests(unittest.TestCase):
         # Apply the switch
         out_iterator = apply(data_pipe, data_list)
         self.assertListEqual(list(out_iterator), expected_data_list)
+
+    # ------------------------------------------------------------------------------
+    # Nested case blocks
+    # ------------------------------------------------------------------------------
+
+    # def test_nested_case_blocks(self):
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # ------------------------------------------------------------------------------
+    # Map-reduce
+    # ------------------------------------------------------------------------------
+
+    def test_fmap(self):
+
+        data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        expected_data_list = [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
+
+        data_pipe = fmap(lambda x: x**2)
+
+        out_iterator = apply(data_pipe, data_list)
+        self.assertListEqual(list(out_iterator), expected_data_list)
+
+
+
+    def test_fmap_with_special_cases(self):
+
+        data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        expected_data_list = [1, 4, 9, 3, 3, 3, 3, 64, 81, 100]
+
+        data_pipe = fmap(lambda x: x**2)
+
+        case(data_pipe, lambda x: 4 <= x < 8, 3)
+
+        out_iterator = apply(data_pipe, data_list)
+        self.assertListEqual(list(out_iterator), expected_data_list)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

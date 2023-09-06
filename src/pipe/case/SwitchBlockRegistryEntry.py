@@ -84,7 +84,7 @@ class AbstractSwitchBlockRegistryEntry(PipelineRegistryEntry):
         """
         Apply case block to a single item.
 
-        item -> match_expression -> value lookup -> expression lookup
+        item -> match_expression -> value lookup -> expression lookup -> default
 
         :param item:
         :return:

@@ -48,7 +48,13 @@ def apply_values(data_pipe, data):
 
 
 
-# fmap()
+# ------------------------------------------------------------------------------
+# Map-reduce interface
+# ------------------------------------------------------------------------------
+
+def fmap(mapping_function):
+    return SwitchBlockRegistryEntry().add_default(mapping_function)
+
 
 
 
