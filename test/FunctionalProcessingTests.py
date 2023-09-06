@@ -52,10 +52,8 @@ class FunctionalProcessingTests(unittest.TestCase):
         # Set up the switch
         data_pipe = switch()
 
-        # Assign a value through a function
-        case(data_pipe, 1, lambda x: "One")
-
         # Assign values directly
+        case(data_pipe, 1, "One")
         case(data_pipe, 2, "Two")
         case(data_pipe, 3, "Three")
         case(data_pipe, 4, "Four")
@@ -72,6 +70,34 @@ class FunctionalProcessingTests(unittest.TestCase):
         # Apply the switch to capture data
         out_iterator = apply(data_pipe, self.data_list)
         self.assertListEqual(list(out_iterator), self.expected_data_list)
+
+
+
+    def test_case_function_usage_list(self):
+
+        # Set up the switch
+        data_pipe = switch()
+
+        # Assign a value through a function
+        case(data_pipe, 1, lambda x: "One")
+
+        # Ignore the match expression and evaluate the value expression only
+        case(data_pipe, lambda x: x + 1 == 3, "Two")
+
+        # Use a function to generate a function
+        case(data_pipe, lambda x: x + 1 == 4, lambda x: 2 * x)
+
+        # Assign a default value
+        case_default(data_pipe, "Unknown")
+
+        # Apply the switch to capture data
+        out_iterator = apply(data_pipe, [1, 2, 3, 4])
+        self.assertListEqual(list(out_iterator), ["One", "Two", 6, "Unknown"])
+
+
+
+
+
 
     def test_case_dictionary_registered_lookup(self):
         case_lookup = {1: "One", 2:"Two", 3:"Three", 4:"Four", 5: "Five", 6:"Six", 7:"Seven", 8:"Eight", 9: "Nine", 10: "Ten", None: "Unknown"}
