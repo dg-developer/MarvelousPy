@@ -203,7 +203,7 @@ class FunctionalProcessingTests(unittest.TestCase):
     # ------------------------------------------------------------------------------
 
 
-    def test_binary_case(self):
+    def test_binary_case_1(self):
 
         data_list = [True, False, True, True, False, False, "String"]
         expected_data_list = [1, 0, 1, 1, 0, 0, 0]
@@ -218,6 +218,28 @@ class FunctionalProcessingTests(unittest.TestCase):
         # Apply the switch
         out_iterator = apply(data_pipe, data_list)
         self.assertListEqual(list(out_iterator), expected_data_list)
+
+
+
+
+    def test_binary_case_2(self):
+
+
+        data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999]
+        expected_data_list = ["Not Four", "Not Four","Not Four","FOUND FOUR","Not Four","Not Four","Not Four","Not Four","Not Four","Not Four","Not Four"]
+
+        # Set up the switch
+        data_pipe = binary_switch(lambda x: x == 4)
+
+        # Assign values (default implicitly assigned through the False case)
+        case_true(data_pipe, "FOUND FOUR")
+        case_false(data_pipe, "Not Four")
+
+        # Apply the switch
+        out_iterator = apply(data_pipe, data_list)
+        self.assertListEqual(list(out_iterator), expected_data_list)
+
+
 
 
     # ------------------------------------------------------------------------------
@@ -243,30 +265,3 @@ class FunctionalProcessingTests(unittest.TestCase):
         # Apply the switch
         out_iterator = apply(data_pipe, data_list)
         self.assertListEqual(list(out_iterator), expected_data_list)
-
-
-    # ------------------------------------------------------------------------------
-    # Binary if-else block
-    # ------------------------------------------------------------------------------
-
-
-
-    def test_binary_ifelse(self):
-
-
-        data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999]
-        expected_data_list = ["Not Four", "Not Four","Not Four","FOUND FOUR","Not Four","Not Four","Not Four","Not Four","Not Four","Not Four","Not Four"]
-
-        # Set up the switch
-        data_pipe = binary_switch(lambda x: x == 4)
-
-        # Assign values (default implicitly assigned through the False case)
-        case_true(data_pipe, "FOUND FOUR")
-        case_false(data_pipe, "Not Four")
-
-        # Apply the switch
-        out_iterator = apply(data_pipe, data_list)
-        self.assertListEqual(list(out_iterator), expected_data_list)
-
-
-
