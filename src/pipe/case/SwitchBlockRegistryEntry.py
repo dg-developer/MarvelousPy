@@ -100,7 +100,7 @@ class AbstractSwitchBlockRegistryEntry(PipelineRegistryEntry):
 
         # Attempt to find the relevant case block by evaluating item in an expression
         for case_block_expression, case_block_value in self.case_block_expression_registry.items():
-            if match_expression == case_block_expression(item):
+            if case_block_expression(item):
                 return case_block_value.get_value(item)
 
         # Return default value
