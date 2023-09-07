@@ -1,11 +1,11 @@
 # AKA switch block entry
 from src.pipe.registry.PipelineRegistryEntry import PipelineRegistryEntry
 
+
 class CallableValue:
     """House a value, or expression used to determine a value."""
 
     def __init__(self, value_expression):
-
         self.__value_expression_fcn = value_expression
 
         # Transform a non-callable value into a callable function
@@ -14,7 +14,6 @@ class CallableValue:
 
     def get_value(self, item):
         return self.__value_expression_fcn(item)
-
 
 
 class AbstractSwitchBlockRegistryEntry(PipelineRegistryEntry):
@@ -107,8 +106,6 @@ class AbstractSwitchBlockRegistryEntry(PipelineRegistryEntry):
         return self.default_block_value.get_value(item)
 
 
-
-
 class SwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
     def __init__(self, match_expression_function=None, pipe_from=None, pipe_to=None):
         super().__init__(match_expression_function=match_expression_function, pipe_from=pipe_from, pipe_to=pipe_to)
@@ -148,8 +145,6 @@ class SwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
         return self
 
 
-
-
 class BinarySwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
     def __init__(self, match_expression_function=None, pipe_from=None, pipe_to=None):
         super().__init__(match_expression_function=match_expression_function, pipe_from=pipe_from, pipe_to=pipe_to)
@@ -163,12 +158,5 @@ class BinarySwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
         self.default_block_value = CallableValue(value_expression)
         return self
 
-
-
 # TODO
 # class EnumSwitchBlockRegistryEntry(AbstractSwitchBlockRegistryEntry):
-
-
-
-
-

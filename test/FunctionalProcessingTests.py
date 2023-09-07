@@ -1,11 +1,7 @@
 import itertools
 import unittest
-from collections import deque
 
-from src.pipe.case.SwitchBlock import *
-
-
-# from src.FunctionalProcessing import *
+from src.pipe.switch.SwitchBlock import *
 
 
 class FunctionalProcessingTests(unittest.TestCase):
@@ -13,14 +9,14 @@ class FunctionalProcessingTests(unittest.TestCase):
     def setUp(self):
 
         self.data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999]
-        self.expected_data_list = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Unknown"]
-
+        self.expected_data_list = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
+                                   "Unknown"]
 
     # ------------------------------------------------------------------------------
     # Case block
     # ------------------------------------------------------------------------------
 
-    def test_case_management_conventional_approach(self):
+    def test_switch_management_conventional_approach(self):
         def map_fcn(item):
             if item == 0:
                 return "Zero"
@@ -46,10 +42,11 @@ class FunctionalProcessingTests(unittest.TestCase):
                 return "Ten"
             else:
                 return "Unknown"
+
         out = list(map(map_fcn, self.data_list))
         self.assertListEqual(out, self.expected_data_list)
 
-    def test_case_nominal_usage_list(self):
+    def test_switch_nominal_usage_list(self):
 
         # Set up the switch
         data_pipe = switch()
@@ -73,9 +70,7 @@ class FunctionalProcessingTests(unittest.TestCase):
         out_iterator = apply(data_pipe, self.data_list)
         self.assertListEqual(list(out_iterator), self.expected_data_list)
 
-
-
-    def test_case_function_usage_list(self):
+    def test_switch_function_usage_list(self):
 
         # Set up the switch
         data_pipe = switch()
@@ -96,13 +91,9 @@ class FunctionalProcessingTests(unittest.TestCase):
         out_iterator = apply(data_pipe, [1, 2, 3, 4])
         self.assertListEqual(list(out_iterator), ["One", "Two", 6, "Unknown"])
 
-
-
-
-
-
-    def test_case_dictionary_registered_lookup(self):
-        case_lookup = {1: "One", 2:"Two", 3:"Three", 4:"Four", 5: "Five", 6:"Six", 7:"Seven", 8:"Eight", 9: "Nine", 10: "Ten", None: "Unknown"}
+    def test_switch_dictionary_registered_lookup(self):
+        case_lookup = {1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six", 7: "Seven", 8: "Eight",
+                       9: "Nine", 10: "Ten", None: "Unknown"}
 
         # Build switch from dictionary lookup structure
         data_pipe = switch()
@@ -114,13 +105,16 @@ class FunctionalProcessingTests(unittest.TestCase):
         case(data_pipe, 3, lambda x: "The Three Number")
         case_default(data_pipe, "New Default")
         out_iterator = apply(data_pipe, self.data_list)
-        self.assertListEqual(list(out_iterator), ["One", "Two", "The Three Number", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "New Default"])
+        self.assertListEqual(list(out_iterator),
+                             ["One", "Two", "The Three Number", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
+                              "New Default"])
 
-
-
-    def test_case_dict_keys(self):
-        data_dict = {1: "One", 2:"Two", 3:"Three", 4:"Four", 5: "Five", 6:"Six", 7:"Seven", 8:"Eight", 9: "Nine", 10: "Ten", 999: "Nine-Hundred Ninety-Nine"}
-        expected_data_dict = {"ONE": "One", "TWO": "Two", "THREE": "Three", "FOUR": "Four", "FIVE": "Five", "SIX": "Six", "SEVEN": "Seven", "EIGHT": "Eight", "NINE": "Nine", "TEN": "Ten", "UNKNOWN": "Nine-Hundred Ninety-Nine"}
+    def test_switch_dict_keys(self):
+        data_dict = {1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six", 7: "Seven", 8: "Eight", 9: "Nine",
+                     10: "Ten", 999: "Nine-Hundred Ninety-Nine"}
+        expected_data_dict = {"ONE": "One", "TWO": "Two", "THREE": "Three", "FOUR": "Four", "FIVE": "Five",
+                              "SIX": "Six", "SEVEN": "Seven", "EIGHT": "Eight", "NINE": "Nine", "TEN": "Ten",
+                              "UNKNOWN": "Nine-Hundred Ninety-Nine"}
         data_pipe = switch()
         case(data_pipe, 1, "ONE")
         case(data_pipe, 2, "TWO")
@@ -136,9 +130,11 @@ class FunctionalProcessingTests(unittest.TestCase):
         out_iterator = apply_keys(data_pipe, data_dict)
         self.assertDictEqual(dict(list(out_iterator)), expected_data_dict)
 
-    def test_case_dict_values(self):
-        data_dict = {1: "One", 2:"Two", 3:"Three", 4:"Four", 5: "Five", 6:"Six", 7:"Seven", 8:"Eight", 9: "Nine", 10: "Ten", 999: "Nine-Hundred Ninety-Nine"}
-        expected_data_dict = {1: "ONE", 2:"TWO", 3:"THREE", 4:"FOUR", 5: "FIVE", 6:"SIX", 7:"SEVEN", 8:"EIGHT", 9: "NINE", 10: "TEN", 999: "UNKNOWN"}
+    def test_switch_dict_values(self):
+        data_dict = {1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six", 7: "Seven", 8: "Eight", 9: "Nine",
+                     10: "Ten", 999: "Nine-Hundred Ninety-Nine"}
+        expected_data_dict = {1: "ONE", 2: "TWO", 3: "THREE", 4: "FOUR", 5: "FIVE", 6: "SIX", 7: "SEVEN", 8: "EIGHT",
+                              9: "NINE", 10: "TEN", 999: "UNKNOWN"}
         data_pipe = switch()
         case(data_pipe, "One", "ONE")
         case(data_pipe, "Two", "TWO")
@@ -154,12 +150,11 @@ class FunctionalProcessingTests(unittest.TestCase):
         out_iterator = apply_values(data_pipe, data_dict)
         self.assertDictEqual(dict(list(out_iterator)), expected_data_dict)
 
-
-
-    def test_case_repeatedly_callable(self):
+    def test_switch_repeatedly_callable(self):
         # Verify that the pipeline can be called again
 
-        case_lookup = {1: "One", 2:"Two", 3:"Three", 4:"Four", 5: "Five", 6:"Six", 7:"Seven", 8:"Eight", 9: "Nine", 10: "Ten", None: "Unknown"}
+        case_lookup = {1: "One", 2: "Two", 3: "Three", 4: "Four", 5: "Five", 6: "Six", 7: "Seven", 8: "Eight",
+                       9: "Nine", 10: "Ten", None: "Unknown"}
 
         # Verify pipe is not callable repeatedly with the same collection
         data_pipe = switch()
@@ -180,8 +175,31 @@ class FunctionalProcessingTests(unittest.TestCase):
         out_iterator = apply(data_pipe, data_list)
         self.assertListEqual(list(out_iterator), expected_data_list)
 
+    def test_switch_redefinition(self):
 
-    def test_case_usage_as_map(self):
+        data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999]
+        expected_data_list = ["OneOne", "TwoTwoTwo", "Unknown2", "Unknown2", "Unknown2", "Unknown2", "Unknown2",
+                              "Unknown2", "Unknown2", "Unknown2", "Unknown2"]
+
+        # Set up the switch
+        data_pipe = switch()
+
+        # Assign values directly
+        case(data_pipe, 1, "One")
+        case(data_pipe, 1, "OneOne")
+        case(data_pipe, 2, "Two")
+        case(data_pipe, 2, "TwoTwo")
+        case(data_pipe, 2, "TwoTwoTwo")
+
+        # Assign a default value
+        case_default(data_pipe, "Unknown1")
+        case_default(data_pipe, "Unknown2")
+
+        # Apply the switch to capture data
+        out_iterator = apply(data_pipe, data_list)
+        self.assertListEqual(list(out_iterator), expected_data_list)
+
+    def test_switch_usage_as_map(self):
 
         # Pure mapping function
         data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -204,7 +222,6 @@ class FunctionalProcessingTests(unittest.TestCase):
     # Binary case block
     # ------------------------------------------------------------------------------
 
-
     def test_binary_case_1(self):
 
         data_list = [True, False, True, True, False, False, "String"]
@@ -221,14 +238,11 @@ class FunctionalProcessingTests(unittest.TestCase):
         out_iterator = apply(data_pipe, data_list)
         self.assertListEqual(list(out_iterator), expected_data_list)
 
-
-
-
     def test_binary_case_2(self):
 
-
         data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 999]
-        expected_data_list = ["Not Four", "Not Four","Not Four","FOUND FOUR","Not Four","Not Four","Not Four","Not Four","Not Four","Not Four","Not Four"]
+        expected_data_list = ["Not Four", "Not Four", "Not Four", "FOUND FOUR", "Not Four", "Not Four", "Not Four",
+                              "Not Four", "Not Four", "Not Four", "Not Four"]
 
         # Set up the switch
         data_pipe = binary_switch(lambda x: x == 4)
@@ -241,13 +255,9 @@ class FunctionalProcessingTests(unittest.TestCase):
         out_iterator = apply(data_pipe, data_list)
         self.assertListEqual(list(out_iterator), expected_data_list)
 
-
-
-
     # ------------------------------------------------------------------------------
     # If-else block
     # ------------------------------------------------------------------------------
-
 
     def test_ifelse(self):
 
@@ -279,20 +289,19 @@ class FunctionalProcessingTests(unittest.TestCase):
 
         data_pipe = switch()
         c0 = lambda x: -x
-        v0 = lambda x: x**2
+        v0 = lambda x: x ** 2
         case(data_pipe, lambda x: c0(x) >= -5, lambda x: v0(x))
         c1 = lambda x: x - 0.1
-        v1 = lambda x: x**3
+        v1 = lambda x: x ** 3
         case(data_pipe, lambda x: c1(x) > 4.89, lambda x: v1(x))
 
         out_iterator = apply(data_pipe, data_list)
         self.assertListEqual(list(out_iterator), expected_data_list)
 
-
     def test_nested_case_blocks(self):
 
-        data_list = [1, 2, 3,   4, 5, 6,   7, 8, 9, 10]
-        expected_data_list = [1, 4, 9,   "Four", "Five", "data_pipe_1 default",   343, 512, 729, "data_pipe_0 default"]
+        data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        expected_data_list = [1, 4, 9, "Four", "Five", "data_pipe_1 default", 343, 512, 729, "data_pipe_0 default"]
 
         data_pipe_1 = switch()
         case(data_pipe_1, 4, lambda x: "Four")
@@ -300,23 +309,13 @@ class FunctionalProcessingTests(unittest.TestCase):
         case_default(data_pipe_1, "data_pipe_1 default")
 
         data_pipe_0 = switch()
-        case(data_pipe_0, lambda x: x < 4, lambda x: x**2)
+        case(data_pipe_0, lambda x: x < 4, lambda x: x ** 2)
         case(data_pipe_0, lambda x: 4 <= x <= 6, lambda x: apply(data_pipe_1, x))
-        case(data_pipe_0, lambda x: 6 < x < 10, lambda x: x**3)
+        case(data_pipe_0, lambda x: 6 < x < 10, lambda x: x ** 3)
         case_default(data_pipe_0, "data_pipe_0 default")
 
         out_iterator = apply(data_pipe_0, data_list)
         self.assertListEqual(list(out_iterator), expected_data_list)
-
-
-
-
-
-
-
-
-
-
 
     # ------------------------------------------------------------------------------
     # Map-reduce
@@ -327,28 +326,25 @@ class FunctionalProcessingTests(unittest.TestCase):
         data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         expected_data_list = [1, 4, 9, 16, 25, 36, 49, 64, 81, 100]
 
-        data_pipe = fmap(lambda x: x**2)
+        data_pipe = fmap(lambda x: x ** 2)
 
         out_iterator = apply(data_pipe, data_list)
         self.assertListEqual(list(out_iterator), expected_data_list)
-
-
 
     def test_fmap_with_special_cases(self):
 
         data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         expected_data_list = [1, 4, 9, 3, 3, 3, 3, 64, 81, 100]
 
-        data_pipe = fmap(lambda x: x**2)
+        data_pipe = fmap(lambda x: x ** 2)
 
         case(data_pipe, lambda x: 4 <= x < 8, 3)
 
         out_iterator = apply(data_pipe, data_list)
         self.assertListEqual(list(out_iterator), expected_data_list)
 
-
-
     def test_deque(self):
+        # TODO Testing iterable slicing for application in accumulator function
         data_list = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
         iterable_data = iter(data_list)
 
@@ -359,34 +355,7 @@ class FunctionalProcessingTests(unittest.TestCase):
         l = itertools.islice(it, 3)
         ll = list(l)
         while len(ll) > 0:
-            print("l")
-            print(ll)
+            # print("l")
+            # print(ll)
             l = itertools.islice(it, 3)
             ll = list(l)
-
-
-
-            # values = q.popleft()
-            # print("values")
-            # print(values)
-
-            # values = q[0]
-            # # values = q[0:qlen]
-            # print("values")
-            # print(values)
-            # q.rotate(-1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -2,6 +2,7 @@ import itertools
 from collections import deque
 from collections.abc import Iterable
 
+
 class PipelineRegistryEntry:
     """Represents a node in a processing pipeline."""
 
@@ -38,7 +39,6 @@ class PipelineRegistryEntry:
         for item in it:
             yield self._apply_item(item)
 
-
     # TODO Move to separate class tree as incongruent with case block execution
     def _apply_step_iterable(self, it):
         accumulator_len = 3
@@ -49,10 +49,6 @@ class PipelineRegistryEntry:
             sit = itertools.islice(it, accumulator_len)
             slice_list = list(sit)
 
-
     def _apply_item(self, item):
         """Apply to a single item."""
         pass
-
-
-

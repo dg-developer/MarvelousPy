@@ -1,6 +1,6 @@
 import unittest
 
-from src.pipe.case.SwitchBlockRegistryEntry import CallableValue
+from src.pipe.switch.SwitchBlockRegistryEntry import CallableValue
 
 
 class CallableValueTests(unittest.TestCase):
