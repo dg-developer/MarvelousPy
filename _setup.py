@@ -5,7 +5,7 @@ with open("ReadMe.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="marvelouspy_drg.developer.2",
+    name="marvelous_drg.developer.2",
     version="0.0.0.0",
     author="David Gayman",
     description="Functional programming features for Python.",

@@ -1,7 +1,8 @@
 import itertools
 import unittest
 
-from marvelous.src.pipe.switch.SwitchBlock import *
+from marvelous.marvelous import switch
+from marvelous.pipe.switch.SwitchBlock import *
 
 
 class FunctionalProcessingTests(unittest.TestCase):
@@ -359,3 +360,7 @@ class FunctionalProcessingTests(unittest.TestCase):
             # print(ll)
             l = itertools.islice(it, 3)
             ll = list(l)
+
+
+if __name__ == "__main__":
+    unittest.main()

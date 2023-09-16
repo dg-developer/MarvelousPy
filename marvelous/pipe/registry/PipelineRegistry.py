@@ -12,7 +12,8 @@ class PipelineRegistry:
             del self.__case_block_registry[pipe]
 
     def generate_new_pipe(self, pipe):
-    # TODO Throw if something already registered with this pipe
+        # TODO Throw if something already registered with this pipe
+        pass
 
 
 
@@ -44,4 +45,5 @@ class PipelineRegistry:
         return self.__iterables_registry[pipe]
 
     def get_case_values(self, pipe):
-        return pipeline_registry.__case_block_registry[pipe]
+        #return pipeline_registry.__case_block_registry[pipe]
+        pass

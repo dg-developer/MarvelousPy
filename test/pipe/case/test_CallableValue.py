@@ -1,6 +1,6 @@
 import unittest
 
-from marvelous.src.pipe.switch.SwitchBlockRegistryEntry import CallableValue
+from marvelous.pipe.switch.SwitchBlockRegistryEntry import CallableValue
 
 
 class CallableValueTests(unittest.TestCase):
@@ -13,3 +13,7 @@ class CallableValueTests(unittest.TestCase):
         v2 = CallableValue(lambda x: "Some string")
         assert v1.get_value(3) == "Some string"
         assert v2.get_value(3) == "Some string"
+
+
+if __name__ == "__main__":
+    unittest.main()
