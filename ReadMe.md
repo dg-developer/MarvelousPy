@@ -382,92 +382,6 @@ Define cases, composed of:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-0
-
-
-
-
 Cases are defined
 
 ## Binary Switch
@@ -518,18 +432,7 @@ self.assertListEqual(list(out_iterator), expected_data_list)
             case(1, "One")
             case(2, "Two")
             default("Unknown")
-            apply([0, 1, 2]) 
-
-0
-
-
-
-
-
-
-
-
-0+...................eoeoe# Returns [ "Unknown", "One", "Two"]
+            apply([0, 1, 2])  # Returns [ "Unknown", "One", "Two"]
 
             # Build a switch block, switching based on the value transformed through the match expression, generating
                 a value
