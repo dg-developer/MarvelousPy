@@ -318,6 +318,36 @@ class FunctionalProcessingTests(unittest.TestCase):
         out_iterator = apply(data_pipe_0, data_list)
         self.assertListEqual(list(out_iterator), expected_data_list)
 
+    def test_chained_statement_chaining(self):
+        out_iterator = switch() \
+            .add_case(1, "One") \
+            .add_case(2, "Two") \
+            .add_case(3, "Three") \
+            .add_case(4, "Four") \
+            .add_case(5, "Five") \
+            .add_case(6, "Six") \
+            .add_case(7, "Seven") \
+            .add_case(8, "Eight") \
+            .add_case(9, "Nine") \
+            .add_case(10, "Ten") \
+            .add_default("Unknown") \
+            .apply(self.data_list)
+        out = list(out_iterator)
+        self.assertListEqual(out, self.expected_data_list)
+
+    def test_chained_pipeline(self):
+        # TODO
+        pass
+
+
+
+
+
+
+
+
+
+
     # ------------------------------------------------------------------------------
     # Map-reduce
     # ------------------------------------------------------------------------------

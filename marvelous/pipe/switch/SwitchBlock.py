@@ -18,7 +18,7 @@ def case(data_pipe, match_expression, value_expression):
 
 def cases_from_dict(data_pipe, case_lookup):
     """Adds cases from items in a dictionary."""
-    data_pipe.add_cases_from_dict(case_lookup)
+    return data_pipe.add_cases_from_dict(case_lookup)
 
 
 def case_default(data_pipe, value_expression):
@@ -37,12 +37,12 @@ def binary_switch(match_expression_function=None):
 
 def case_true(data_pipe, value_expression):
     """Add True case handling."""
-    data_pipe.add_true(value_expression)
+    return data_pipe.add_true(value_expression)
 
 
 def case_false(data_pipe, value_expression):
     """Add False case handling."""
-    data_pipe.add_false(value_expression)
+    return data_pipe.add_false(value_expression)
 
 
 # ------------------------------------------------------------------------------

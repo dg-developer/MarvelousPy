@@ -1,16 +1,19 @@
 [tool.poetry]
-name = "marvelous"
+name = "MarvelousPy"
 version = "0.0.0.0"
 description = "Amazing functional programming interface for Python."
 authors = ["David Gayman <drg.developer.2@gmail.com>"]
+readme = "ReadMe.md"
 license = "Apache License 2.0"
-readme = "README.md"
+packages = [
+    { include = "marvelous" }
+]
+
+[tool.poetry.scripts]
+main     = "main:main"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-
-[tool.poetry.scripts]
-main     = "x:main"
 
 [build-system]
 requires = ["poetry-core"]
