@@ -1,7 +1,7 @@
 import itertools
 import unittest
 
-from src.pipe.switch.SwitchBlock import *
+from marvelous.src.pipe.switch.SwitchBlock import *
 
 
 class FunctionalProcessingTests(unittest.TestCase):

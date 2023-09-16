@@ -1,4 +1,4 @@
-from src.pipe.switch.SwitchBlockRegistryEntry import SwitchBlockRegistryEntry, BinarySwitchBlockRegistryEntry
+from marvelous.src.pipe.switch.SwitchBlockRegistryEntry import SwitchBlockRegistryEntry, BinarySwitchBlockRegistryEntry
 
 
 # ------------------------------------------------------------------------------

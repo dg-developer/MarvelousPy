@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "marvelouspy_drg.developer.2"
+version = "0.0.0.0"
+authors = [
+    { name="David Gayman", email="drg.developer.2@gmail.com" },
+]
+description = "Functional programming features for Python."
+readme = "ReadMe.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache License 2.0",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/dg-developer/MarvelousPy"
+"Bug Tracker" = "https://github.com/dg-developer/MarvelousPy/issues"

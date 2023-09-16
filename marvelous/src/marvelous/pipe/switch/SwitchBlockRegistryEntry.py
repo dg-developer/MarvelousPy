@@ -1,5 +1,5 @@
 # AKA switch block entry
-from src.pipe.registry.PipelineRegistryEntry import PipelineRegistryEntry
+from marvelous.src.pipe.registry.PipelineRegistryEntry import PipelineRegistryEntry
 
 
 class CallableValue:
