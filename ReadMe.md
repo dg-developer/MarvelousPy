@@ -1,5 +1,7 @@
 # MarvelousPy
 
+Amazing functional programming interface for Python.
+
 # Pipelines
 
 Data pipelines are defined which connect blocks.
