@@ -1,6 +1,6 @@
 import unittest
 
-from marvelous.pipe.switch.SwitchBlockRegistryEntry import CallableValue
+from src.pipe.switch.SwitchBlockRegistryEntry import CallableValue
 
 
 class CallableValueTests(unittest.TestCase):

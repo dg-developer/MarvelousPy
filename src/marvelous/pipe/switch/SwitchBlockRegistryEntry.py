@@ -1,4 +1,4 @@
-from marvelous.pipe.registry.PipelineRegistryEntry import PipelineRegistryEntry
+from src.pipe.registry.PipelineRegistryEntry import PipelineRegistryEntry
 
 
 # AKA switch block entry

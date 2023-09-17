@@ -1,4 +1,4 @@
-from marvelous.pipe.switch.SwitchBlockRegistryEntry import SwitchBlockRegistryEntry, BinarySwitchBlockRegistryEntry
+from src.pipe.switch.SwitchBlockRegistryEntry import SwitchBlockRegistryEntry, BinarySwitchBlockRegistryEntry
 
 
 # ------------------------------------------------------------------------------
@@ -6,9 +6,9 @@ from marvelous.pipe.switch.SwitchBlockRegistryEntry import SwitchBlockRegistryEn
 # ------------------------------------------------------------------------------
 
 
-# def switch(match_expression_function=None):
-#     """Defines a switch block."""
-#     return SwitchBlockRegistryEntry(match_expression_function)
+def switch(match_expression_function=None):
+    """Defines a switch block."""
+    return SwitchBlockRegistryEntry(match_expression_function)
 
 
 def case(data_pipe, match_expression, value_expression):

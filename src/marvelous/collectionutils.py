@@ -1,6 +1,6 @@
-from marvelous.marvelous import switch
-from marvelous.pipe.switch.SwitchBlock import binary_switch
-from marvelous.typeutils import is_iterable
+from src.marvelous import switch
+from src.pipe.switch.SwitchBlock import binary_switch
+from src.typeutils import is_iterable
 
 
 def generate_repeated_list(item, repetitions):

@@ -1,0 +1,89 @@
+#!/bin/bash
+
+# ------------------------------------------------------------------------------
+# Description
+# ------------------------------------------------------------------------------
+
+# Run various packaging commands.
+
+# ------------------------------------------------------------------------------
+# Process Arguments
+# ------------------------------------------------------------------------------
+
+main() {
+
+  # Handle only the first command passed into the script
+  case $1 in
+    refresh) refresh;;
+    update) update;;
+    build) build;;
+    publish) publish;;
+    help) print_help;;
+    --help) print_help;;
+    *) print_help;;
+
+  esac;
+
+  # Exit with code
+  exit 0
+}
+
+# ------------------------------------------------------------------------------
+# Commands
+# ------------------------------------------------------------------------------
+
+refresh() {
+  poetry cache clear pypi --all
+}
+
+update() {
+  echo "No development dependencies."
+}
+
+build() {
+  poetry build
+}
+
+publish() {
+  # Extract current version
+  grep 'version = "0.0.0.([0-9]+)"' pyproject.toml
+  version=$(awk -F'"' '/^version =/ {print $2}' pyproject.toml)
+
+  # Chop up the version string
+  majorversion=$(echo $version | cut -d'.' -f1-3)
+  minorversion=$(echo $version | cut -d'.' -f4)
+
+  # Advance the minor version number
+  new_mversion=$((minorversion + 1))
+  new_version="$majorversion.$new_mversion"
+
+  # Update the .toml file
+  sed -i s/version.*=.*/version\ =\ \"$new_version\"/ pyproject.toml
+
+  # Build and publish
+  poetry publish --build
+}
+
+print_help() {
+cat <<'_HELP_TEXT'
+
+voices <command> <args>
+
+Commands marked with [root] need to be run as root.
+
+Commands:
+  refresh           Refresh central poetry cache.
+  update            Update development dependencies.
+  build             Build the package locally.
+  publish           Update the version number, build and publish the package.
+  help              Print this help information.
+
+_HELP_TEXT
+}
+
+# ------------------------------------------------------------------------------
+# Run
+# ------------------------------------------------------------------------------
+
+# Execute the script with forward-declared functions
+main $@

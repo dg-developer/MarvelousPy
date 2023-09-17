@@ -1,5 +1,5 @@
-from marvelous.marvelous import switch
-from marvelous.pipe.switch.SwitchBlock import case, case_default, apply
+from src.marvelous import switch
+from src.pipe.switch.SwitchBlock import case, case_default, apply
 
 
 def main():
