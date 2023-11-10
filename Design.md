@@ -42,3 +42,6 @@ pipe registry PipelineRegistry
                 apply function to produce value - CaseBlock
 
 # TODO Reference the https://iteration-utilities.readthedocs.io/en/latest library
+
+# TODO Function to insert and manage a dictionary of lists. { id -> [ data items ] }. Append to the list or set, or create if not exist.
+
