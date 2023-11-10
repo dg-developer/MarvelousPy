@@ -41,3 +41,4 @@ pipe registry PipelineRegistry
             match expression table
                 apply function to produce value - CaseBlock
 
+# TODO Reference the https://iteration-utilities.readthedocs.io/en/latest library

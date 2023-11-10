@@ -20,6 +20,12 @@ def generate_repeated_list(item, repetitions):
     else:
         return [item] * repetitions
 
-
-
-
+def flatten(nested_list):
+    # https://stackoverflow.com/questions/952914/how-do-i-make-a-flat-list-out-of-a-list-of-lists
+    # https://iteration-utilities.readthedocs.io/en/latest/generated/deepflatten.html
+    for x in nested_list:
+        if isinstance(x, Iterable) and not isinstance(x, (str, bytes)):
+            for sub_x in flatten(x):
+                yield sub_x
+        else:
+            yield x
